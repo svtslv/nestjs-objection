@@ -176,8 +176,6 @@ export class AppController {
     .modifyGraph('posts', q => q.select(['title']));
 ```
 
-MIT
-
 ## License
 
 MIT
