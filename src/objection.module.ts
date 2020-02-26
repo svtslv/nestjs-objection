@@ -7,8 +7,7 @@ import {
   ObjectionModuleAsyncOptions
 } from './objection.interfaces';
 import { 
-  OBJECTION_CONNECTION_NAME, 
-  OBJECTION_MODULE_ID, 
+  OBJECTION_CONNECTION_NAME,
   OBJECTION_MODULE_OPTIONS, 
   OBJECTION_BASE_MODULE,
 } from './objection.constants'

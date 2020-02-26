@@ -4,6 +4,7 @@
 
 - [Description](#description)
 - [Installation](#installation)
+- [Features](#features)
 - [Examples](#examples)
 - [License](#license)
 
@@ -16,6 +17,11 @@ Integrates Objection.js and Knex with Nest
 $ npm install nestjs-objection knex objection
 ```
 
+## Features
+
+- Decorators ```@InjectModel, @Table, @Column, @Relation ```
+- Synchronize ```synchronize(Model)```
+
 ## Examples
 ```bash
 $ npm install nestjs-objection knex objection sqlite3
@@ -23,17 +29,24 @@ $ npm install nestjs-objection knex objection sqlite3
 
 ```ts
 // app.models.ts
-import { Column, Relation, Table, relationTypes, columnTypes, Model } from 'nestjs-objection';
+import { 
+  Model, 
+  Column, 
+  Relation, 
+  Table, 
+  relationTypes, 
+  columnTypes, 
+} from 'nestjs-objection';
 
 @Table({ tableName: 'posts' })
 export class Post extends Model {
   @Column({ type: columnTypes.string })
   title: string;
 
-  @Column({ type: columnTypes.object })
+  @Column({ type: columnTypes.json })
   json: { [key: string]: any };
 
-  @Column({ type: columnTypes.number })
+  @Column({ type: columnTypes.integer })
   userId: number;
 }
 
@@ -78,7 +91,7 @@ export class AppModule {}
 ```ts
 // app.controller.ts
 import { Controller, Get, } from '@nestjs/common';
-import { InjectModel } from 'nestjs-objection';
+import { InjectModel, synchronize } from 'nestjs-objection';
 import { User, Post } from './app.models';
 
 @Controller()
@@ -90,21 +103,24 @@ export class AppController {
 
   @Get()
   async getHello() {
-    if (!await this.userModel.knex().schema.hasTable('users')) { 
-      await User.knex().schema.createTable('users', table => {
-        table.increments('id').primary();
-        table.string('name');
-      });
-      await this.userModel.query().insert({ name: 'Name' });
-    }
-    if (!await this.postModel.knex().schema.hasTable('posts')) { 
-      await Post.knex().schema.createTable('posts', table => {
-        table.increments('id').primary();
-        table.integer('userId').references('users.id');
-        table.string('title');
-      });
-      await this.postModel.query().insert({ title: 'Title', userId: 1 });
-    }
+    // if (!await this.userModel.knex().schema.hasTable('users')) { 
+    //   await User.knex().schema.createTable('users', table => {
+    //     table.increments('id').primary();
+    //     table.string('name');
+    //   });
+    // }
+    // if (!await this.postModel.knex().schema.hasTable('posts')) { 
+    //   await Post.knex().schema.createTable('posts', table => {
+    //     table.increments('id').primary();
+    //     table.integer('userId').references('users.id');
+    //     table.string('title');
+    //   });
+    // }
+
+    await synchronize(User);
+    await synchronize(Post);
+    await this.userModel.query().insert({ name: 'Name' });
+    await this.postModel.query().insert({ title: 'Title', userId: 1 });
 
     const users = await this.userModel
       .query()
