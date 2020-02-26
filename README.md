@@ -137,43 +137,43 @@ export class AppController {
 ## Typescript
 
 ```ts
-  // src/index.d.ts
-  import { AnyQueryBuilder } from 'objection';
-  
-  declare module 'objection' {
-    interface WhereMethod<QB extends AnyQueryBuilder> {
-      <T>(columns: Partial<T>): QB;
-      <T>(column: Partial<keyof T>, op: string, value: any): QB;
-    }
-    interface OrderByMethod<QB extends AnyQueryBuilder> {
-      <T>(column: keyof T, order?: 'asc' | 'desc'): QB;
-      <T>(columns: (Array<{ column: keyof T; order?: 'asc' | 'desc' }>)): QB;
-    }
-    interface SelectMethod<QB extends AnyQueryBuilder> {
-      <T>(...columnNames: Array<Partial<keyof T>>): QB;
-      <T>(columnNames: Array<Partial<keyof T>>): QB;
-    }
+// src/index.d.ts
+import { AnyQueryBuilder } from 'objection';
+
+declare module 'objection' {
+  interface WhereMethod<QB extends AnyQueryBuilder> {
+    <T>(columns: Partial<T>): QB;
+    <T>(column: Partial<keyof T>, op: string, value: any): QB;
   }
+  interface OrderByMethod<QB extends AnyQueryBuilder> {
+    <T>(column: keyof T, order?: 'asc' | 'desc'): QB;
+    <T>(columns: (Array<{ column: keyof T; order?: 'asc' | 'desc' }>)): QB;
+  }
+  interface SelectMethod<QB extends AnyQueryBuilder> {
+    <T>(...columnNames: Array<Partial<keyof T>>): QB;
+    <T>(columnNames: Array<Partial<keyof T>>): QB;
+  }
+}
 ```
 
 ```ts
-  // with type-safe
-  const users = await this.userModel
-    .query()
-    .select<User>(['name'])
-    .where<User>({ name: 'Name' })
-    .orderBy<User>('name', 'desc')
-    .withGraphFetched('posts')
-    .modifyGraph('posts', q => q.select<Post>(['title']));
+// with type-safe
+const users = await this.userModel
+  .query()
+  .select<User>(['name'])
+  .where<User>({ name: 'Name' })
+  .orderBy<User>('name', 'desc')
+  .withGraphFetched('posts')
+  .modifyGraph('posts', q => q.select<Post>(['title']));
 
-  //without type-safe
-  const users = await this.userModel
-    .query()
-    .select(['name'])
-    .where({ name: 'Name' })
-    .orderBy('name', 'desc')
-    .withGraphFetched('posts')
-    .modifyGraph('posts', q => q.select(['title']));
+// without type-safe
+const users = await this.userModel
+  .query()
+  .select(['name'])
+  .where({ name: 'Name' })
+  .orderBy('name', 'desc')
+  .withGraphFetched('posts')
+  .modifyGraph('posts', q => q.select(['title']));
 ```
 
 ## License
