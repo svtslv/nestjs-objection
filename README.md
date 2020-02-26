@@ -13,12 +13,12 @@ Integrates Objection.js and Knex with Nest
 ## Installation
 
 ```bash
-$ npm install nestjs-objection
+$ npm install nestjs-objection knex objection
 ```
 
 ## Examples
 ```bash
-$ npm install nestjs-objection sqlite3
+$ npm install nestjs-objection knex objection sqlite3
 ```
 
 ```ts
@@ -119,4 +119,4 @@ export class AppController {
 
 ## License
 
-MIT licensed.
+MIT

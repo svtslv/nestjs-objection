@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Model, QueryBuilder } from 'objection';
+import { Model, QueryBuilder, RelationMappings } from 'objection';
 import { getInjectToken } from './objection.utils';
 export { Model, QueryBuilder };
 
@@ -9,7 +9,7 @@ export function InjectModel(model: any, connection?: string) {
 }
 
 // Table
-export function Table(options: { tableName: string, [key: string]: any }) {
+export function Table(options: Partial<typeof Model>) {
   return function (target: any) {
     target.tableName = target.name;
     Object.keys(options).forEach(item => {
@@ -44,7 +44,10 @@ export const relationTypes = {
   BelongsToOneRelation: Model.BelongsToOneRelation,
 } as const;
 
-export function Relation(relationMapping: { modelClass: any, relation: typeof relationTypes[keyof typeof relationTypes], join: { from: string, to: string} }) {
+type RelationMappingItem = RelationMappings[''];
+type RelationMappingsThunkItem = () => RelationMappingItem;
+
+export function Relation(relationMapping: RelationMappingItem | RelationMappingsThunkItem) {
   return function(target: any, propertyKey: string) {
     target.constructor.relationMappings = target.constructor.relationMappings || {};
     target.constructor.relationMappings[propertyKey] = relationMapping
