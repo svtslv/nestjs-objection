@@ -160,6 +160,9 @@ export class SDQueryBuilder extends QueryBuilder<Model> {
       }
     });
   }
+  softDelete()  {
+    return super.patch({ [this.deletedAt]: new Date() });
+  }
   withDeleted() {
     return this.context({ withDeleted: true });
   }
