@@ -51,7 +51,7 @@ export class ObjectionModule {
     };
   }
 
-  static forFuture(models: any[], connection?: string): DynamicModule {
+  static forFeature(models: any[], connection?: string): DynamicModule {
     const providers = (models || []).map(model => ({
       provide: getInjectToken(model, connection),
       useValue: model,

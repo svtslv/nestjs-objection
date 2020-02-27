@@ -87,7 +87,7 @@ import { User, Post } from './app.models';
         connection: ':memory:',
       }
     }),
-    ObjectionModule.forFuture([User, Post]),
+    ObjectionModule.forFeature([User, Post]),
   ],
   controllers: [AppController],
 })
