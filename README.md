@@ -169,12 +169,10 @@ export class SDModel extends Model {
   static get QueryBuilder() {
     return SDQueryBuilder as any;
   }
-
   // $beforeInsert() {
   //   const createdAt = 'createdAt';
   //   this[createdAt] = new Date();
   // }
-
   // $beforeUpdate() {
   //   const updatedAt = 'updatedAt';
   //   if (this.hasOwnProperty(updatedAt)) {
