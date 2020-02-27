@@ -10,6 +10,7 @@
 - [Installation](#installation)
 - [Features](#features)
 - [Examples](#examples)
+- [Soft Delete](#soft-delete)
 - [Typescript](#typescript)
 - [License](#license)
 
@@ -136,6 +137,65 @@ export class AppController {
     return { users }
   }
 }
+```
+
+## Soft Delete
+
+```ts
+import { 
+  Model, 
+  QueryBuilder,
+  Table, 
+  Column, 
+  columnTypes, 
+} from 'nestjs-objection';
+
+export class SDQueryBuilder extends QueryBuilder<Model> {
+  private deletedAt = 'deletedAt';
+  constructor(model: any) {
+    super(model);
+    this.onBuild(query => {
+      if(query.isFind() && !query.context().withDeleted) {
+        query.whereNull(this.deletedAt);
+      }
+    });
+  }
+  withDeleted() {
+    return this.context({ withDeleted: true });
+  }
+}
+
+export class SDModel extends Model {
+  static get QueryBuilder() {
+    return SDQueryBuilder as any;
+  }
+
+  // $beforeInsert() {
+  //   const createdAt = 'createdAt';
+  //   this[createdAt] = new Date();
+  // }
+
+  // $beforeUpdate() {
+  //   const updatedAt = 'updatedAt';
+  //   if (this.hasOwnProperty(updatedAt)) {
+  //     this[updatedAt] = new Date();
+  //   }
+  // }
+}
+
+@Table({ tableName: 'users' })
+export class User extends SDModel {
+  @Column({ type: columnTypes.string })
+  name: string;
+  @Column({ type: columnTypes.datetime })
+  deletedAt: Date;
+}
+
+// // app.module.ts
+// ObjectionModule.forRoot({
+//   Model: SDModel,
+//   config: { /* ... */ }
+// })
 ```
 
 ## Typescript
