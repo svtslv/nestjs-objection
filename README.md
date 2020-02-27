@@ -1,5 +1,9 @@
 # NestJS Objection
 
+<a href="https://www.npmjs.com/package/nestjs-objection"><img src="https://img.shields.io/npm/v/nestjs-objection.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/package/nestjs-objection"><img src="https://img.shields.io/npm/dm/nestjs-objection.svg" alt="NPM Downloads" /></a>
+<a href="https://www.npmjs.com/package/nestjs-objection"><img src="https://img.shields.io/npm/l/nestjs-objection.svg" alt="Package License" /></a>
+
 ## Table of Contents
 
 - [Description](#description)
@@ -21,7 +25,7 @@ $ npm install nestjs-objection knex objection
 ## Features
 
 - Decorators ```@InjectModel, @Table, @Column, @Relation ```
-- Synchronize ```synchronize(Model)```
+- Synchronization ```synchronize(Model)```
 
 ## Examples
 ```bash

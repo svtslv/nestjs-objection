@@ -1,6 +1,6 @@
 {
   "name": "nestjs-objection",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Nest - modern, fast, powerful node.js web framework (@objection)",
   "author": "Sviatoslav H",
   "license": "MIT",
@@ -55,5 +55,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/svtslv/nestjs-objection"
-  }
+  },
+  "keywords": [
+    "nestjs",
+    "objection",
+    "knex",
+    "orm",
+    "database"
+  ]
 }
