@@ -218,6 +218,10 @@ declare module 'objection' {
     <T>(...columnNames: Array<Partial<keyof T>>): QB;
     <T>(columnNames: Array<Partial<keyof T>>): QB;
   }
+  // interface QueryBuilder<M extends Model, R = M[]> extends Promise<R> {
+  //   softDelete();
+  //   withDeleted(): AnyQueryBuilder;
+  // }
 }
 ```
 
