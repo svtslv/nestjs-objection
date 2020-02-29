@@ -1,14 +1,7 @@
-import { Inject } from '@nestjs/common';
 import { Model, QueryBuilder, RelationMappings } from 'objection';
-import { getInjectToken } from './objection.utils';
 export { Model, QueryBuilder };
 
-// InjectModel
-export function InjectModel(model: any, connection?: string) {
-  return Inject(getInjectToken(model, connection))
-}
-
-// Table
+/* Table */
 export function Table(options: Partial<typeof Model>) {
   return function (target: any) {
     target.tableName = target.name;
@@ -18,7 +11,7 @@ export function Table(options: Partial<typeof Model>) {
   }
 }
 
-// Column
+/* Column */
 const allTypes = {
   number: 'number',
   string: 'string',
@@ -29,7 +22,7 @@ const allTypes = {
 };
 const anyType = Object.values(allTypes).map(item => item);
 export const columnTypes = {
-  // knex
+  /* knex */
   increments: { key: 'increments', type: [allTypes.number] },
   integer: { key: 'integer', type: [allTypes.number, allTypes.null] },
   bigInteger: { key: 'bigInteger', type: [allTypes.number, allTypes.null] },
@@ -53,7 +46,7 @@ export const columnTypes = {
   charset: { key: 'charset', type: anyType },
   collate: { key: 'collate', type: anyType },
   inherits: { key: 'inherits', type: anyType },
-  // custom
+  /* custom */
   number: { key: 'integer', type: [allTypes.number, allTypes.null] },
   object: { key: 'object', type: [allTypes.object] }
 };
@@ -68,7 +61,7 @@ export function Column(options?: { type?: typeof columnTypes[keyof typeof column
   }
 }
 
-// Relation
+/* Relation */
 export const relationTypes = {
   HasManyRelation: Model.HasManyRelation,
   HasOneRelation: Model.HasOneRelation,

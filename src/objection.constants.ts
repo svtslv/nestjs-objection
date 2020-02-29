@@ -1,4 +1,4 @@
-export const OBJECTION_MODULE_OPTIONS = 'ObjectionModuleOptions';
-export const OBJECTION_MODULE_ID = 'ObjectionModuleId';
-export const OBJECTION_BASE_MODULE = 'ObjectionBaseModule';
-export const OBJECTION_CONNECTION_NAME = 'default';
+export const OBJECTION_MODULE_CONNECTION = 'default';
+export const OBJECTION_MODULE_CONNECTION_TOKEN = 'ObjectionModuleConnectionToken';
+export const OBJECTION_MODULE_OPTIONS_TOKEN = 'ObjectionModuleOptionsToken';
+export const OBJECTION_MODULE_BASE_MODEL_TOKEN = 'ObjectionModuleBaseModelToken';

@@ -1,15 +1,28 @@
 import { Model } from 'objection';
 import {
-  OBJECTION_CONNECTION_NAME,
-  OBJECTION_MODULE_ID
+  OBJECTION_MODULE_CONNECTION,
+  OBJECTION_MODULE_CONNECTION_TOKEN,
+  OBJECTION_MODULE_OPTIONS_TOKEN,
+  OBJECTION_MODULE_BASE_MODEL_TOKEN,
 } from './objection.constants';
 
-export const getInjectToken = (model, connection) => {
-  connection = connection || OBJECTION_CONNECTION_NAME;
-  return `${connection}_${OBJECTION_MODULE_ID}_${model.name}`
-};
+export function getObjectionOptionsToken(connection: string): string {
+  return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_OPTIONS_TOKEN }`;
+}
 
-export const synchronize = async (model: typeof Model, force?: boolean) => {
+export function getObjectionConnectionToken(connection: string): string {
+  return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_CONNECTION_TOKEN }`;
+}
+
+export function getObjectionBaseModelToken(connection: string): any {
+  return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_BASE_MODEL_TOKEN }`;
+}
+
+export function getObjectionModelToken(model, connection: string): string {
+  return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_CONNECTION_TOKEN }_${ model.name }`;
+}
+
+export async function synchronize(model: typeof Model, force?: boolean) {
   const tableName = model.tableName;
 
   if(force) {
@@ -34,4 +47,4 @@ export const synchronize = async (model: typeof Model, force?: boolean) => {
       table[columnType](columnName);
     });
   }
-};
+}

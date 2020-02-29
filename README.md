@@ -97,7 +97,7 @@ export class AppModule {}
 ```ts
 // app.controller.ts
 import { Controller, Get, } from '@nestjs/common';
-import { InjectModel, synchronize } from 'nestjs-objection';
+import { InjectModel, synchronize, InjectConnection, Connection } from 'nestjs-objection';
 import { User, Post } from './app.models';
 
 @Controller()
@@ -105,24 +105,11 @@ export class AppController {
   constructor(
     @InjectModel(User) private readonly userModel: typeof User,
     @InjectModel(Post) private readonly postModel: typeof Post,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
 
   @Get()
   async getHello() {
-    // if (!await this.userModel.knex().schema.hasTable('users')) { 
-    //   await User.knex().schema.createTable('users', table => {
-    //     table.increments('id').primary();
-    //     table.string('name');
-    //   });
-    // }
-    // if (!await this.postModel.knex().schema.hasTable('posts')) { 
-    //   await Post.knex().schema.createTable('posts', table => {
-    //     table.increments('id').primary();
-    //     table.integer('userId').references('users.id');
-    //     table.string('title');
-    //   });
-    // }
-
     await synchronize(User);
     await synchronize(Post);
     await this.userModel.query().insert({ name: 'Name' });
@@ -134,7 +121,9 @@ export class AppController {
       .withGraphJoined('posts')
       .modifyGraph('posts', q => q.select(['posts.title']));
 
-    return { users }
+    const posts = await this.connection.table('posts');
+
+    return { users, posts };
   }
 }
 ```
