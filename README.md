@@ -101,7 +101,7 @@ import {
   InjectModel, 
   synchronize, 
   InjectConnection, 
-  Connection 
+  Connection, 
 } from 'nestjs-objection';
 import { User, Post } from './app.models';
 
