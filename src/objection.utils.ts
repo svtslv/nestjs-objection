@@ -1,4 +1,3 @@
-import { Model } from 'objection';
 import {
   OBJECTION_MODULE_CONNECTION,
   OBJECTION_MODULE_CONNECTION_TOKEN,
@@ -20,31 +19,4 @@ export function getObjectionBaseModelToken(connection: string): any {
 
 export function getObjectionModelToken(model, connection: string): string {
   return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_CONNECTION_TOKEN }_${ model.name }`;
-}
-
-export async function synchronize(model: typeof Model, force?: boolean) {
-  const tableName = model.tableName;
-
-  if(force) {
-    await model.knex().schema.dropTable(tableName)
-  }
-
-  if(!await model.knex().schema.hasTable(tableName)) {
-    await model.knex().schema.createTable(tableName, table => {
-      table.increments('id').primary();
-    })
-  }
-
-  const properties = model.jsonSchema?.properties || {};
-
-  for(const item of Object.keys(properties)) {
-    const columnName = item;
-    const columnType = properties[item]['key'];
-    if (await model.knex().schema.hasColumn(tableName, columnName)) {
-      return null;
-    }
-    await model.knex().schema.table(tableName, table => {
-      table[columnType](columnName);
-    });
-  }
 }
