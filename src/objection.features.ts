@@ -48,7 +48,7 @@ export const columnTypes = {
   inherits: { key: 'inherits', type: anyType },
   /* custom */
   number: { key: 'integer', type: [allTypes.number, allTypes.null] },
-  object: { key: 'object', type: [allTypes.object] }
+  object: { key: 'json', type: [allTypes.object] }
 };
 
 export function Column(options?: { type?: typeof columnTypes[keyof typeof columnTypes] }) {

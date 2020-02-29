@@ -97,7 +97,12 @@ export class AppModule {}
 ```ts
 // app.controller.ts
 import { Controller, Get, } from '@nestjs/common';
-import { InjectModel, synchronize, InjectConnection, Connection } from 'nestjs-objection';
+import { 
+  InjectModel, 
+  synchronize, 
+  InjectConnection, 
+  Connection 
+} from 'nestjs-objection';
 import { User, Post } from './app.models';
 
 @Controller()
