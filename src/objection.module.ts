@@ -1,52 +1,23 @@
-import { Module, DynamicModule, Provider } from "@nestjs/common";
-import * as Knex from "knex";
-import { Model } from 'objection'
-import {
-  getObjectionModelToken,
-  getObjectionConnectionToken,
-  getObjectionOptionsToken,
-  getObjectionBaseModelToken,
-} from './objection.utils';
-import {
-  ObjectionModuleOptions,
-  ObjectionModuleAsyncOptions
-} from './objection.interfaces';
+import { DynamicModule, Module } from '@nestjs/common';
+import { ObjectionCoreModule } from './objection.core-module';
+import { ObjectionModuleAsyncOptions, ObjectionModuleOptions } from './objection.interfaces';
+import { getObjectionModelToken } from './objection.utils';
 
 @Module({})
 export class ObjectionModule {
-  static forRoot(options: ObjectionModuleOptions, connection?: string): DynamicModule {
-
-    const BaseModel = options.Model || Model;
-    const knex = Knex(options.config);
-    BaseModel.knex(knex);
-
-    const objectionOptionsProvider: Provider = {
-      provide: getObjectionOptionsToken(connection),
-      useValue: options,
-    };
-
-    const objectionBaseModelProvider: Provider = {
-      provide: getObjectionBaseModelToken(connection),
-      useValue: BaseModel,
-    };
-
-    const objectionConnectionProvider: Provider = {
-      provide: getObjectionConnectionToken(connection),
-      useValue: knex,
-    };
-
+  public static forRoot(options: ObjectionModuleOptions, connection?: string): DynamicModule {
     return {
       module: ObjectionModule,
-      providers: [
-        objectionOptionsProvider,
-        objectionBaseModelProvider,
-        objectionConnectionProvider,
-      ],
-      exports: [
-        objectionOptionsProvider,
-        objectionBaseModelProvider,
-        objectionConnectionProvider,
-      ],
+      imports: [ObjectionCoreModule.forRoot(options, connection)],
+      exports: [ObjectionCoreModule],
+    };
+  }
+
+  public static forRootAsync(options: ObjectionModuleAsyncOptions, connection?: string): DynamicModule {
+    return {
+      module: ObjectionModule,
+      imports: [ObjectionCoreModule.forRootAsync(options, connection)],
+      exports: [ObjectionCoreModule],
     };
   }
 
@@ -60,13 +31,6 @@ export class ObjectionModule {
       module: ObjectionModule,
       providers: providers,
       exports: providers,
-    };
-  }
-
-  static forRootAsync(options: ObjectionModuleAsyncOptions, connection?: string): DynamicModule {
-    return {
-      module: ObjectionModule,
-      imports: [ObjectionModule.forRootAsync(options, connection)],
     };
   }
 }

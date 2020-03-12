@@ -33,6 +33,8 @@ $ npm install nestjs-objection knex objection
 $ npm install nestjs-objection knex objection sqlite3
 ```
 
+### Models
+
 ```ts
 // app.models.ts
 import { 
@@ -70,6 +72,8 @@ export class User extends Model {
 }
 ```
 
+### ObjectionModule.forRoot(options, connection?)
+
 ```ts
 // app.module.ts
 import { Module } from '@nestjs/common';
@@ -93,6 +97,36 @@ import { User, Post } from './app.models';
 })
 export class AppModule {}
 ```
+
+### ObjectionModule.forRootAsync(options, connection?)
+
+```ts
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { ObjectionModule, Model } from 'nestjs-objection'
+import { AppController } from './app.controller';
+import { User, Post } from './app.models';
+
+@Module({
+  imports: [
+    ObjectionModule.forRootAsync({
+      useFactory: () => ({
+        Model,
+        config: {
+          client: "sqlite3",
+          useNullAsDefault: true,
+          connection: ':memory:',
+        },
+      }),
+    }),
+    ObjectionModule.forFeature([User, Post]),
+  ],
+  controllers: [AppController],
+})
+export class AppModule {}
+```
+
+### InjectModel(Model, connection?)
 
 ```ts
 // app.controller.ts
