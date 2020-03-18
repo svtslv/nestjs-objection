@@ -23,6 +23,12 @@ Integrates Objection.js and Knex with Nest
 $ npm install nestjs-objection knex objection
 ```
 
+You can also use the interactive CLI
+
+```sh
+npx nestjs-modules
+```
+
 ## Features
 
 - Decorators ```@InjectModel, @Table, @Column, @Relation ```
