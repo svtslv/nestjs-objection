@@ -17,7 +17,9 @@
     "database"
   ],
   "files": [
-    "dist"
+    "dist",
+    "index.js",
+    "index.d.ts"
   ],
   "main": "dist/index.js",
   "scripts": {
