@@ -1,7 +1,7 @@
 import * as index from '../src/index';
 
 describe('Index', () => {
-  test('should return 17 exports', () => {
-    expect(Object.keys(index)).toHaveLength(17);
+  test('should return 20 exports', () => {
+    expect(Object.keys(index)).toHaveLength(20);
   });
 });
