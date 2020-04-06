@@ -63,7 +63,7 @@ npx nestjs-modules
 
 #### columnTypes
 
-|                 |                 |                |                   |
+| ---             | ---             | ---            | ---               |
 | --------------- | --------------- | -------------- | ----------------- |
 | `increments`    | `bigIncrements` | `integer`      | `bigInteger`      |
 | `text`          | `string`        | `float`        | `decimal`         |
