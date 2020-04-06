@@ -31,8 +31,8 @@ npx nestjs-modules
 ## Features
 
 - Decorators      ```@InjectModel, @Table, @Column, @Relation ```
-- Synchronization ```synchronize(model, force)```
-- SoftDelete      ```@Table({ softDelete: boolean | string })```
+- Synchronization ```synchronize(model, force?)```
+- SoftDelete      ```@Table({ softDelete: true })```
 
 #### Table options
 
