@@ -61,6 +61,16 @@ npx nestjs-modules
 | `model`         | `Model`         | `true`   | `---`             |
 | `force`         | `boolean`       | `false`  | `false`           |
 
+#### columnTypes
+
+|                 |                 |                |                   |
+| --------------- | --------------- | -------------- | ----------------- |
+| `increments`    | `bigIncrements` | `integer`      | `bigInteger`      |
+| `text`          | `string`        | `float`        | `decimal`         |
+| `boolean`       | `date`          | `datetime`     | `time`            |
+| `timestamp`     | `timestamps`    | `binary`       | `json`            |
+| `jsonb`         | `uuid`          |                |                   |
+
 ## Examples
 ```bash
 $ npm install nestjs-objection knex objection sqlite3
