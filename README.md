@@ -40,7 +40,6 @@ npx nestjs-modules
 | ------------ | ------------------ | -------- | ----------------- |
 | `tableName`  | `string`           | `true`   | `className`       |
 | `softDelete` | `boolean / string` | `false`  | `false`           |
-```+ Partial<typeof Model>```
 
 #### Column options
 
