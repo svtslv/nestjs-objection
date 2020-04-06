@@ -10,7 +10,6 @@
 - [Installation](#installation)
 - [Features](#features)
 - [Examples](#examples)
-- [Soft Delete](#soft-delete)
 - [Typescript](#typescript)
 - [License](#license)
 
@@ -31,8 +30,39 @@ npx nestjs-modules
 
 ## Features
 
-- Decorators ```@InjectModel, @Table, @Column, @Relation ```
-- Synchronization ```synchronize(Model)```
+- Decorators      ```@InjectModel, @Table, @Column, @Relation ```
+- Synchronization ```synchronize(model, force)```
+- SoftDelete      ```@Table({ softDelete: boolean | string })```
+
+#### Table options
+
+| Name         | Type               | Required | Default           |
+| ------------ | ------------------ | -------- | ----------------- |
+| `tableName`  | `string`           | `true`   | `className`       |
+| `softDelete` | `boolean / string` | `false`  | `false`           |
+```+ Partial<typeof Model>```
+
+#### Column options
+
+| Name            | Type            | Required | Default           |
+| --------------- | --------------- | -------- | ----------------- |
+| `type`          | `columnTypes`   | `true`   | `---`             |
+| `default`       | `any`           | `false`  | `---`             |
+| `columnName`    | `string`        | `false`  | `false`           |
+| `nullable`      | `boolean`       | `false`  | `false`           |
+| `notNullable`   | `boolean`       | `false`  | `false`           |
+| `unique`        | `boolean`       | `false`  | `false`           |
+| `unsigned`      | `boolean`       | `false`  | `false`           |
+| `increments`    | `boolean`       | `false`  | `false`           |
+| `bigIncrements` | `boolean`       | `false`  | `false`           |
+| `primary`       | `boolean`       | `false`  | `false`           |
+
+#### synchronize(model, force?)
+
+| Name            | Type            | Required | Default           |
+| --------------- | --------------- | -------- | ----------------- |
+| `model`         | `Model`         | `true`   | `---`             |
+| `force`         | `boolean`       | `false`  | `false`           |
 
 ## Examples
 ```bash
@@ -173,72 +203,37 @@ export class AppController {
 }
 ```
 
-## Soft Delete
+### SoftDeleteModel
 
 ```ts
-import { 
-  Model, 
-  QueryBuilder,
-  Table, 
-  Column, 
-  columnTypes, 
-} from 'nestjs-objection';
+import { SoftDeleteModel } from 'nestjs-objection';
 
-export class SDQueryBuilder extends QueryBuilder<Model> {
-  private deletedAt = 'deletedAt';
-  constructor(model: any) {
-    super(model);
-    this.onBuild(query => {
-      if(query.isFind() && !query.context().withDeleted) {
-        query.whereNull(this.deletedAt);
-      }
-    });
-  }
-  softDelete()  {
-    return super.patch({ [this.deletedAt]: new Date() });
-  }
-  withDeleted() {
-    return this.context({ withDeleted: true });
-  }
-}
-
-export class SDModel extends Model {
-  static get QueryBuilder() {
-    return SDQueryBuilder as any;
-  }
-  // $beforeInsert() {
-  //   const createdAt = 'createdAt';
-  //   this[createdAt] = new Date();
-  // }
-  // $beforeUpdate() {
-  //   const updatedAt = 'updatedAt';
-  //   if (this.hasOwnProperty(updatedAt)) {
-  //     this[updatedAt] = new Date();
-  //   }
-  // }
-}
-
-@Table({ tableName: 'users' })
-export class User extends SDModel {
-  @Column({ type: columnTypes.string })
-  name: string;
+@Table({ tableName: 'users', softDelete: true })
+export class User extends SoftDeleteModel {
+  @Column({ type: columnTypes.integer, increments: true })
+  id: number;
   @Column({ type: columnTypes.datetime })
   deletedAt: Date;
 }
+```
 
-// // app.module.ts
-// ObjectionModule.forRoot({
-//   Model: SDModel,
-//   config: { /* ... */ }
-// })
+```ts
+ObjectionModule.forRoot({
+  Model: SoftDeleteModel,
+  config: { /* ... */ }
+})
+```
+
+```ts
+this.userModel.query().where({ id: 1 }).delete(); // softDelete
+this.userModel.query().where({ id: 1 }).includeDeleted();
+this.userModel.query().where({ id: 1 }).forceDelete();
 ```
 
 ## Typescript
 
 ```ts
 // src/index.d.ts
-import { AnyQueryBuilder } from 'objection';
-
 declare module 'objection' {
   interface WhereMethod<QB extends AnyQueryBuilder> {
     <T>(columns: Partial<T>): QB;
@@ -252,10 +247,10 @@ declare module 'objection' {
     <T>(...columnNames: Array<Partial<keyof T>>): QB;
     <T>(columnNames: Array<Partial<keyof T>>): QB;
   }
-  // interface QueryBuilder<M extends Model, R = M[]> extends Promise<R> {
-  //   softDelete();
-  //   withDeleted(): AnyQueryBuilder;
-  // }
+  interface QueryBuilder<M extends Model, R = M[]> extends Promise<R> {
+    includeDeleted(): this;
+    forceDelete(): this;
+  }
 }
 ```
 
