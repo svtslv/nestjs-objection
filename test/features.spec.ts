@@ -36,6 +36,7 @@ describe('ObjectionFeatures', () => {
     await user.$query().insert();
     await user.$query().patch();
     await user.$query().delete();
+    console.log(user);
 
     const result = await User.query().includeDeleted().select<User>(['age', 'name']);
 

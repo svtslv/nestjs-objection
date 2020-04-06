@@ -198,7 +198,7 @@ export class AppController {
 #### SoftDeleteModel
 
 ```ts
-import { SoftDeleteModel } from 'nestjs-objection';
+import { SoftDeleteModel, columnTypes } from 'nestjs-objection';
 
 @Table({ tableName: 'users', softDelete: true })
 export class User extends SoftDeleteModel {
