@@ -29,6 +29,8 @@ const anyType = Object
 
 export const columnTypes = {
   /* knex */
+  increments: { columnType: 'increments', type: [allTypes.number, allTypes.null] },
+  bigIncrements: { columnType: 'bigIncrements', type: [allTypes.number, allTypes.null] },
   integer: { columnType: 'integer', type: [allTypes.number, allTypes.null] },
   bigInteger: { columnType: 'bigInteger', type: [allTypes.number, allTypes.null] },
   text: { columnType: 'text', type: [allTypes.string, allTypes.null] },
@@ -49,7 +51,6 @@ export const columnTypes = {
   number: { columnType: 'integer', type: [allTypes.number, allTypes.null] },
   object: { columnType: 'json', type: [allTypes.object] }
   /* other */
-  // increments: { columnType: 'increments', type: anyType },
   // default: { columnType: 'default', type: anyType },
   // nullable: { columnType: 'nullable', type: anyType },
   // notNullable: { columnType: 'notNullable', type: anyType },
@@ -76,8 +77,6 @@ type ColumnOptions = {
   notNullable?: boolean,
   unique?: boolean,
   unsigned?: boolean,
-  increments?: boolean,
-  bigIncrements?: boolean,
   primary?: boolean
 }
 
@@ -85,7 +84,7 @@ export function Column(options?: ColumnOptions) {
   return function(target: any, propertyKey: string) {
     const columnName = options.columnName || propertyKey;
     
-    if (options.increments || options.bigIncrements || options.primary) {
+    if (options?.type?.columnType === 'increments' || options?.type?.columnType === 'bigIncrements' || options?.primary) {
       target.constructor.idColumn = columnName
     }
 
@@ -130,8 +129,8 @@ export async function synchronize(model: typeof Model, force?: boolean) {
 
   if(!await model.knex().schema.hasTable(tableName)) {
     await model.knex().schema.createTable(tableName, table => {
-      const increments = Object.values(properties).filter(item => item.increments)[0];
-      const bigIncrements = Object.values(properties).filter(item => item.bigIncrements)[0];
+      const increments = Object.values(properties).filter(item => item.type?.columnType === 'increments')[0];
+      const bigIncrements = Object.values(properties).filter(item => item.type?.columnType === 'bigIncrements')[0];
       const primary = Object.values(properties).filter(item => item.primary)[0];
       if(increments) {
         table.increments(increments.columnName).primary();

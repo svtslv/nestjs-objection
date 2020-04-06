@@ -1,5 +1,5 @@
-import { Model as ObjectionModel } from 'objection';
-export type { AnyQueryBuilder } from 'objection';
+import { Model } from 'objection';
+export type { AnyQueryBuilder, Model } from 'objection';
 
 declare module 'objection' {
   interface WhereMethod<QB extends AnyQueryBuilder> {
@@ -14,16 +14,16 @@ declare module 'objection' {
     <T>(...columnNames: Array<Partial<keyof T>>): QB;
     <T>(columnNames: Array<Partial<keyof T>>): QB;
   }
-  interface QueryBuilder<M extends ObjectionModel, R = M[]> extends Promise<R> {
+  interface QueryBuilder<M extends Model, R = M[]> extends Promise<R> {
     includeDeleted(): this;
     forceDelete(): this;
   }
 }
 
 export const softDelete = () => {
-  return (Model: any): typeof ObjectionModel => {
+  return (IncomingModel: any): typeof Model => {
 
-    class SoftDeleteQueryBuilder extends Model.QueryBuilder {
+    class SoftDeleteQueryBuilder extends IncomingModel.QueryBuilder {
       softDeleteColumnName: string;
 
       constructor(modelClass: any) {
@@ -59,7 +59,7 @@ export const softDelete = () => {
       }
     }
 
-    class SDModel extends Model {
+    class SDModel extends IncomingModel {
       static get QueryBuilder() {
         return SoftDeleteQueryBuilder;
       }
@@ -73,4 +73,4 @@ export const softDelete = () => {
   }
 };
 
-export const SoftDeleteModel = softDelete()(ObjectionModel);
+export class SoftDeleteModel extends softDelete()(Model) {};

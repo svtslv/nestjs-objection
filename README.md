@@ -52,8 +52,6 @@ npx nestjs-modules
 | `notNullable`   | `boolean`       | `false`  | `false`           |
 | `unique`        | `boolean`       | `false`  | `false`           |
 | `unsigned`      | `boolean`       | `false`  | `false`           |
-| `increments`    | `boolean`       | `false`  | `false`           |
-| `bigIncrements` | `boolean`       | `false`  | `false`           |
 | `primary`       | `boolean`       | `false`  | `false`           |
 
 #### synchronize(model, force?)
@@ -68,17 +66,12 @@ npx nestjs-modules
 $ npm install nestjs-objection knex objection sqlite3
 ```
 
-### Models
+#### Models
 
 ```ts
 // app.models.ts
 import { 
-  Model, 
-  Column, 
-  Relation, 
-  Table, 
-  relationTypes, 
-  columnTypes, 
+  Model, Column, Relation, Table, relationTypes, columnTypes, 
 } from 'nestjs-objection';
 
 @Table({ tableName: 'posts' })
@@ -107,7 +100,7 @@ export class User extends Model {
 }
 ```
 
-### ObjectionModule.forRoot(options, connection?)
+#### ObjectionModule.forRoot(options, connection?)
 
 ```ts
 // app.module.ts
@@ -133,7 +126,7 @@ import { User, Post } from './app.models';
 export class AppModule {}
 ```
 
-### ObjectionModule.forRootAsync(options, connection?)
+#### ObjectionModule.forRootAsync(options, connection?)
 
 ```ts
 // app.module.ts
@@ -161,7 +154,7 @@ import { User, Post } from './app.models';
 export class AppModule {}
 ```
 
-### InjectModel(Model, connection?)
+#### InjectModel(Model, connection?)
 
 ```ts
 // app.controller.ts
@@ -202,14 +195,14 @@ export class AppController {
 }
 ```
 
-### SoftDeleteModel
+#### SoftDeleteModel
 
 ```ts
 import { SoftDeleteModel } from 'nestjs-objection';
 
 @Table({ tableName: 'users', softDelete: true })
 export class User extends SoftDeleteModel {
-  @Column({ type: columnTypes.integer, increments: true })
+  @Column({ type: columnTypes.increments })
   id: number;
   @Column({ type: columnTypes.datetime })
   deletedAt: Date;

@@ -4,7 +4,7 @@ import { Table, Column, columnTypes, synchronize, knex, SoftDeleteModel } from '
 
 @Table({ tableName: 'User', softDelete: true })
 class User extends SoftDeleteModel {
-  @Column({ type: columnTypes.bigInteger, increments: true })
+  @Column({ type: columnTypes.increments })
   id2: number;
   @Column({ type: columnTypes.number, default: 30 })
   age: number;

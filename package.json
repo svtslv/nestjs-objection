@@ -1,6 +1,6 @@
 {
   "name": "nestjs-objection",
-  "version": "2.0.0",
+  "version": "2.0.0-test.1",
   "description": "Nest - modern, fast, powerful node.js web framework (@objection)",
   "author": "Sviatoslav H",
   "license": "MIT",
@@ -31,7 +31,7 @@
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
-    "publish:next": "npm publish --access public --tag next",
+    "publish:test": "npm publish --access public --tag test",
     "prerelease": "npm run build",
     "release": "release-it"
   },
