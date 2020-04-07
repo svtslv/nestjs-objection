@@ -65,7 +65,9 @@ npx nestjs-modules
 
 | Method           | Type           | Options        | Return            |
 | --------------- | --------------- | -------------- | ----------------- |
+| `delete`        | `function`      | `---`          | `QueryBuilder`    |
 | `softDelete`    | `function`      | `---`          | `QueryBuilder`    |
+| `forceDelete`   | `function`      | `---`          | `QueryBuilder`    |
 | `withDeleted`   | `function`      | `---`          | `QueryBuilder`    |
 | `onlyDeleted`   | `function`      | `---`          | `QueryBuilder`    |
 | `restore`       | `function`      | `---`          | `QueryBuilder`    |
