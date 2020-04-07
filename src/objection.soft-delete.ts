@@ -15,8 +15,11 @@ declare module 'objection' {
     <T>(columnNames: Array<Partial<keyof T>>): QB;
   }
   interface QueryBuilder<M extends Model, R = M[]> extends Promise<R> {
-    includeDeleted(): this;
     forceDelete(): this;
+    withDeleted(): this;
+    onlyDeleted(): this;
+    softDelete(): this;
+    restore(): this;
   }
 }
 
@@ -31,19 +34,13 @@ export const softDelete = () => {
 
         if (modelClass.softDelete) {
           this.softDeleteColumnName = typeof modelClass.softDelete === 'string' ? modelClass.softDelete : 'deletedAt'
-        }
 
-        if (modelClass.softDelete) {
           this.onBuild((q: any) => {
             if (q.isFind() && !q.context().includeDeleted) {
               q.whereNull(`${q.tableRefFor(modelClass)}.${this.softDeleteColumnName}`);
             }
           });
         }
-      }
-
-      includeDeleted() {
-        return this.context({ includeDeleted: true });
       }
 
       delete(...args: any) {
@@ -56,6 +53,26 @@ export const softDelete = () => {
 
       forceDelete(...args: any) {
         return super.delete(...args);
+      }
+
+      withDeleted() {
+        return this.context({ includeDeleted: true });
+      }
+
+      onlyDeleted() {
+        return super.whereNotNull(this.softDeleteColumnName);
+      }
+
+      softDelete() {
+        if (this.modelClass().softDelete) {
+          return super.patch({ [this.softDeleteColumnName]: new Date() });
+        }
+      }
+
+      restore() {
+        if (this.modelClass().softDelete) {
+          return super.patch({ [this.softDeleteColumnName]: null });
+        }
       }
     }
 

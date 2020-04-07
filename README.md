@@ -227,9 +227,11 @@ ObjectionModule.forRoot({
 ```
 
 ```ts
-this.userModel.query().where({ id: 1 }).delete(); // softDelete
-this.userModel.query().where({ id: 1 }).includeDeleted();
+this.userModel.query().where({ id: 1 }).delete(); // or alias softDelete()
+this.userModel.query().where({ id: 1 }).withDeleted();
+this.userModel.query().where({ id: 1 }).onlyDeleted();
 this.userModel.query().where({ id: 1 }).forceDelete();
+this.userModel.query().where({ id: 1 }).restore();
 ```
 
 ## Typescript
@@ -250,8 +252,11 @@ declare module 'objection' {
     <T>(columnNames: Array<Partial<keyof T>>): QB;
   }
   interface QueryBuilder<M extends Model, R = M[]> extends Promise<R> {
-    includeDeleted(): this;
     forceDelete(): this;
+    withDeleted(): this;
+    onlyDeleted(): this;
+    softDelete(): this;
+    restore(): this;
   }
 }
 ```
