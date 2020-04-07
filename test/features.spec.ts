@@ -17,7 +17,7 @@ class User extends SoftDeleteModel {
 }
 
 describe('ObjectionFeatures', () => {
-  test('should return one user', async () => {
+  test('should return two users', async () => {
     const connection = knex({ client: 'sqlite3', connection: ':memory:', useNullAsDefault: true });
     // const connection = knex({ client: 'pg', connection: 'postgres://postgres:password@127.0.0.1:5432/postgres' });
 
@@ -34,13 +34,26 @@ describe('ObjectionFeatures', () => {
     user.name = 'John';
     // user.age = 30;
     await user.$query().insert();
-    await user.$query().patch();
     await user.$query().delete();
     console.log(user);
 
-    const result = await User.query().includeDeleted().select<User>(['age', 'name']);
+    const user2 = new User();
+    user2.name = 'Mike';
+    user2.age = 35;
+    await user2.$query().insert();
+    console.log(user2);
 
-    expect(result.length).toEqual(1);
+    const withDeleted = await User.query().withDeleted();
+    const onlyDeleted = await User.query().onlyDeleted();
+    await User.query().where<User>({ id2: 1 }).restore();
+    const users = await User.query();
+    console.log('withDeleted', withDeleted);
+    console.log('onlyDeleted', onlyDeleted);
+    console.log('users', users);
+
+    expect(withDeleted.length).toEqual(2);
+    expect(onlyDeleted.length).toEqual(1);
+    expect(users.length).toEqual(2);
     await connection.destroy();
   });
 });

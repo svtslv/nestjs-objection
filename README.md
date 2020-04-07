@@ -61,6 +61,15 @@ npx nestjs-modules
 | `model`         | `Model`         | `true`   | `---`             |
 | `force`         | `boolean`       | `false`  | `false`           |
 
+#### softDelete
+
+| Method           | Type           | Options        | Return            |
+| --------------- | --------------- | -------------- | ----------------- |
+| `softDelete`    | `function`      | `---`          | `QueryBuilder`    |
+| `withDeleted`   | `function`      | `---`          | `QueryBuilder`    |
+| `onlyDeleted`   | `function`      | `---`          | `QueryBuilder`    |
+| `restore`       | `function`      | `---`          | `QueryBuilder`    |
+
 #### columnTypes
 
 | ---             | ---             | ---            | ---               |
@@ -227,7 +236,7 @@ ObjectionModule.forRoot({
 ```
 
 ```ts
-this.userModel.query().where({ id: 1 }).delete(); // or alias softDelete()
+this.userModel.query().where({ id: 1 }).delete(); // or softDelete()
 this.userModel.query().where({ id: 1 }).withDeleted();
 this.userModel.query().where({ id: 1 }).onlyDeleted();
 this.userModel.query().where({ id: 1 }).forceDelete();

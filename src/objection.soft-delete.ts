@@ -60,7 +60,7 @@ export const softDelete = () => {
       }
 
       onlyDeleted() {
-        return super.whereNotNull(this.softDeleteColumnName);
+        return this.withDeleted().whereNotNull(this.softDeleteColumnName);
       }
 
       softDelete() {
