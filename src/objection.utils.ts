@@ -20,8 +20,8 @@ export function getObjectionBaseModelToken(connection: string): any {
   return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_BASE_MODEL_TOKEN }`;
 }
 
-export function getObjectionModelToken(model, connection: string): string {
-  return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_CONNECTION_TOKEN }_${ model.name }`;
+export function getObjectionModelToken(model: any, connection: string): string {
+  return `${ connection || OBJECTION_MODULE_CONNECTION }_${ OBJECTION_MODULE_CONNECTION_TOKEN }_${ model.tableName || model.name }`;
 }
 
 export function createObjectionConnection(options: ObjectionModuleOptions): Connection {

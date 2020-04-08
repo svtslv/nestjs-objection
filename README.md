@@ -14,6 +14,7 @@
 - [License](#license)
 
 ## Description
+
 Integrates Objection.js and Knex with Nest
 
 ## Installation
@@ -83,6 +84,7 @@ npx nestjs-modules
 | `jsonb`         | `uuid`          |                |                   |
 
 ## Examples
+
 ```bash
 $ npm install nestjs-objection knex objection sqlite3
 ```
