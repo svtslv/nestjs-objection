@@ -99,21 +99,22 @@ import {
 
 @Table({ tableName: 'posts' })
 export class Post extends Model {
-  @Column({ type: columnTypes.string })
-  title: string;
-
-  @Column({ type: columnTypes.json })
-  json: { [key: string]: any };
-
+  @Column({ type: columnTypes.increments })
+  id: number;
   @Column({ type: columnTypes.integer })
   userId: number;
+  @Column({ type: columnTypes.string })
+  title: string;
+  @Column({ type: columnTypes.json })
+  json: object;
 }
 
 @Table({ tableName: 'users' })
 export class User extends Model {
+  @Column({ type: columnTypes.increments })
+  id: number;
   @Column({ type: columnTypes.string })
   name: string;
-
   @Relation({ 
     modelClass: Post, 
     relation: relationTypes.HasManyRelation, 
