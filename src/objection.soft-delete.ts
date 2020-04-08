@@ -14,6 +14,9 @@ declare module 'objection' {
     <T>(...columnNames: Array<Partial<keyof T>>): QB;
     <T>(columnNames: Array<Partial<keyof T>>): QB;
   }
+  interface WhereNullMethod<QB extends AnyQueryBuilder> {
+    <T>(column: Partial<keyof T>): QB;
+  }
   interface QueryBuilder<M extends Model, R = M[]> extends Promise<R> {
     forceDelete(): this;
     withDeleted(): this;
