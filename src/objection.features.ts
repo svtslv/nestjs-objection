@@ -16,12 +16,13 @@ export function Table(options: Partial<typeof Model> & { softDelete?: boolean | 
 /* Modifier */
 export function Modifier(modifier?: (query: AnyQueryBuilder, ...props: any) => any): any {
   return function(target: any, propertyKey: string, descriptor: any) {
+    const modifiers = { [propertyKey]: modifier || descriptor?.value };
+    
     target.modifiers = target.modifiers || {};
-    if (modifier) {
-      target.modifiers[propertyKey] = modifier;
-    } else {
-      target.modifiers[propertyKey] = descriptor.value;
-    }
+    target.modifiers = { ...target.modifiers, ...modifiers };
+
+    target.constructor.modifiers = target.constructor.modifiers || {};
+    target.constructor.modifiers = { ...target.constructor.modifiers, ...modifiers };
   }
 }
 

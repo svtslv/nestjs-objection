@@ -14,15 +14,12 @@ class User extends SoftDeleteModel {
   // variant 1
   @Modifier()
   static defaultSelects(query) {
-    query.select('id2', 'age');
+    query.select('id2');
   }
 
   // variant 2
-  @Modifier(query => query.orderBy('id2', 'asc'))
+  @Modifier(query => query.orderBy('id2', 'desc'))
   static defaultOrderBy: Function;
-  // static defaultLimit() {
-  //   return null;
-  // };
 
   @Column({ type: columnTypes.increments })
   id2: number;
