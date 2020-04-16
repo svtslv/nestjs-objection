@@ -1,6 +1,6 @@
 {
   "name": "nestjs-objection",
-  "version": "2.0.1",
+  "version": "2.1.0-test.1",
   "description": "Nest - modern, fast, powerful node.js web framework (@objection)",
   "author": "Sviatoslav H",
   "license": "MIT",
@@ -22,6 +22,7 @@
     "index.d.ts"
   ],
   "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "scripts": {
     "fix": "rm -rf node_modules && rm package-lock.json && npm install",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",

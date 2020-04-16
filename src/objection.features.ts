@@ -1,7 +1,7 @@
-import { Model, QueryBuilder, RelationMappings } from 'objection';
+import { Model, QueryBuilder, RelationMappings, AnyQueryBuilder } from 'objection';
 
 export * as knex from 'knex';
-export { Model, QueryBuilder };
+export { Model, QueryBuilder, AnyQueryBuilder };
 
 /* Table */
 export function Table(options: Partial<typeof Model> & { softDelete?: boolean | string }) {
@@ -10,6 +10,18 @@ export function Table(options: Partial<typeof Model> & { softDelete?: boolean | 
     Object.keys(options).forEach(item => {
       target[item] = options[item]
     })
+  }
+}
+
+/* Modifier */
+export function Modifier(modifier?: (query: AnyQueryBuilder, ...props: any) => any): any {
+  return function(target: any, propertyKey: string, descriptor: any) {
+    target.modifiers = target.modifiers || {};
+    if (modifier) {
+      target.modifiers[propertyKey] = modifier;
+    } else {
+      target.modifiers[propertyKey] = descriptor.value;
+    }
   }
 }
 
@@ -77,7 +89,8 @@ type ColumnOptions = {
   notNullable?: boolean,
   unique?: boolean,
   unsigned?: boolean,
-  primary?: boolean
+  primary?: boolean,
+  length?: number,
 }
 
 export function Column(options?: ColumnOptions) {
@@ -150,7 +163,11 @@ export async function synchronize(model: typeof Model, force?: boolean) {
     if (!await model.knex().schema.hasColumn(tableName, columnName)) {
       await model.knex().schema.table(tableName, table => {
         // create column
-        table[columnType](columnName);
+        if(options.length) {
+          table[columnType](columnName, options.length);
+        } else {
+          table[columnType](columnName);
+        }
 
         // alter column
         const client = model.knex().client?.config?.client

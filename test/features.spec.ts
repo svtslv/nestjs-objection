@@ -1,14 +1,34 @@
-import { Table, Column, columnTypes, synchronize, knex, SoftDeleteModel } from '../src';
+import { Table, Column, columnTypes, synchronize, knex, SoftDeleteModel, Modifier } from '../src';
 
 // const SoftDelete = softDelete()(Model)
 
 @Table({ tableName: 'User', softDelete: true })
 class User extends SoftDeleteModel {
+
+  // static modifiers = {
+  //   defaultSelects(query) {
+  //     query.select('id2', 'age');
+  //   }
+  // };
+
+  // variant 1
+  @Modifier()
+  static defaultSelects(query) {
+    query.select('id2', 'age');
+  }
+
+  // variant 2
+  @Modifier(query => query.orderBy('id2', 'asc'))
+  static defaultOrderBy: Function;
+  // static defaultLimit() {
+  //   return null;
+  // };
+
   @Column({ type: columnTypes.increments })
   id2: number;
   @Column({ type: columnTypes.number, default: 30 })
   age: number;
-  @Column({ type: columnTypes.string })
+  @Column({ type: columnTypes.string, length: 20 })
   name: string;
   @Column({ type: columnTypes.object })
   json: object;
@@ -18,7 +38,8 @@ class User extends SoftDeleteModel {
 
 describe('ObjectionFeatures', () => {
   test('should return two users', async () => {
-    const connection = knex({ client: 'sqlite3', connection: ':memory:', useNullAsDefault: true });
+    const connection = knex({ client: 'sqlite3', connection: { filename: 'test/sqlite.db' }, useNullAsDefault: true });
+    // const connection = knex({ client: 'sqlite3', connection: ':memory:', useNullAsDefault: true });
     // const connection = knex({ client: 'pg', connection: 'postgres://postgres:password@127.0.0.1:5432/postgres' });
 
     // connection.on('query', query => console.log('Knex Query', { 
@@ -46,7 +67,7 @@ describe('ObjectionFeatures', () => {
     const withDeleted = await User.query().withDeleted();
     const onlyDeleted = await User.query().onlyDeleted();
     await User.query().where<User>({ id2: 1 }).restore();
-    const users = await User.query();
+    const users = await User.query().modify('defaultSelects').modify('defaultOrderBy');
     console.log('withDeleted', withDeleted);
     console.log('onlyDeleted', onlyDeleted);
     console.log('users', users);
