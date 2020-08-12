@@ -1,4 +1,5 @@
-import { Table, Column, columnTypes, synchronize, knex, SoftDeleteModel, Modifier } from '../src';
+import * as knex from 'knex'
+import { Table, Column, columnTypes, synchronize, SoftDeleteModel, Modifier } from '../src';
 
 // const SoftDelete = softDelete()(Model)
 

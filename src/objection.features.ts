@@ -1,6 +1,5 @@
 import { Model, QueryBuilder, RelationMappings, AnyQueryBuilder } from 'objection';
 
-export * as knex from 'knex';
 export { Model, QueryBuilder, AnyQueryBuilder };
 
 /* Table */
