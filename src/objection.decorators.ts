@@ -1,8 +1,10 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { Inject } from '@nestjs/common';
 import { getObjectionConnectionToken, getObjectionModelToken } from './objection.utils';
 
 export function InjectModel(model: any, connection?: string) {
-  return Inject(getObjectionModelToken(model, connection))
+  return Inject(getObjectionModelToken(model, connection));
 }
 
 export function InjectKnex(connection?: string) {
