@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 export { AnyQueryBuilder, Model } from 'objection';
 
 declare module 'objection' {
@@ -7,7 +9,7 @@ declare module 'objection' {
   }
   interface OrderByMethod<QB extends AnyQueryBuilder> {
     <T>(column: keyof T, order?: 'asc' | 'desc'): QB;
-    <T>(columns: (Array<{ column: keyof T; order?: 'asc' | 'desc' }>)): QB;
+    <T>(columns: Array<{ column: keyof T; order?: 'asc' | 'desc' }>): QB;
   }
   interface SelectMethod<QB extends AnyQueryBuilder> {
     <T>(...columnNames: Array<Partial<keyof T>>): QB;

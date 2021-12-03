@@ -22,11 +22,11 @@ export class ObjectionModule {
   }
 
   static forFeature(models: any[], connection?: string): DynamicModule {
-    const providers = (models || []).map(model => ({
+    const providers = (models || []).map((model) => ({
       provide: getObjectionModelToken(model, connection),
       useValue: model,
     }));
-  
+
     return {
       module: ObjectionModule,
       providers: providers,

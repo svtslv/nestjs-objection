@@ -1,16 +1,17 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { Model } from 'objection';
 
 export const softDelete = () => {
   return (IncomingModel: any): typeof Model => {
-
     class SoftDeleteQueryBuilder extends IncomingModel.QueryBuilder {
       softDeleteColumnName: string;
 
       constructor(modelClass: any) {
-        super(modelClass)
+        super(modelClass);
 
         if (modelClass.softDelete) {
-          this.softDeleteColumnName = typeof modelClass.softDelete === 'string' ? modelClass.softDelete : 'deletedAt'
+          this.softDeleteColumnName = typeof modelClass.softDelete === 'string' ? modelClass.softDelete : 'deletedAt';
 
           this.onBuild((q: any) => {
             if (q.isFind() && !q.context().includeDeleted) {
@@ -61,10 +62,10 @@ export const softDelete = () => {
       static get isSoftDelete() {
         return true;
       }
-    };
+    }
 
     return SDModel as any;
-  }
+  };
 };
 
-export class SoftDeleteModel extends softDelete()(Model) {};
+export class SoftDeleteModel extends softDelete()(Model) {}

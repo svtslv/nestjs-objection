@@ -4,7 +4,6 @@ import { Table, Column, columnTypes, synchronize, knex, SoftDeleteModel, Modifie
 
 @Table({ tableName: 'User', softDelete: true })
 class User extends SoftDeleteModel {
-
   // static modifiers = {
   //   defaultSelects(query) {
   //     query.select('id2', 'age');
@@ -18,8 +17,8 @@ class User extends SoftDeleteModel {
   }
 
   // variant 2
-  @Modifier(query => query.orderBy('id2', 'desc'))
-  static defaultOrderBy: Function;
+  @Modifier((query) => query.orderBy('id2', 'desc'))
+  static defaultOrderBy: () => any;
 
   @Column({ type: columnTypes.increments })
   id2: number;
@@ -35,16 +34,20 @@ class User extends SoftDeleteModel {
 
 describe('ObjectionFeatures', () => {
   test('should return two users', async () => {
-    const connection = knex({ client: 'sqlite3', connection: { filename: 'test/sqlite.db' }, useNullAsDefault: true });
+    const connection = knex.knex({
+      client: 'sqlite3',
+      connection: { filename: 'test/sqlite.db' },
+      useNullAsDefault: true,
+    });
     // const connection = knex({ client: 'sqlite3', connection: ':memory:', useNullAsDefault: true });
     // const connection = knex({ client: 'pg', connection: 'postgres://postgres:password@127.0.0.1:5432/postgres' });
 
-    // connection.on('query', query => console.log('Knex Query', { 
-    //   date: new Date(), 
-    //   sql: query.sql, 
-    //   bindings: query.bindings 
+    // connection.on('query', query => console.log('Knex Query', {
+    //   date: new Date(),
+    //   sql: query.sql,
+    //   bindings: query.bindings
     // }));
-    
+
     SoftDeleteModel.knex(connection);
     await synchronize(User, true);
 
