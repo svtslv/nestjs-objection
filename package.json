@@ -41,7 +41,7 @@
     "objection": ">=3.0.0"
   },
   "devDependencies": {
-    "@nestjs/common": "^8.2.3",
+    "@nestjs/common": "^10.2.8",
     "@nestjs/core": "^9.0.5",
     "@nestjs/testing": "^8.2.3",
     "@types/jest": "^27.0.3",
